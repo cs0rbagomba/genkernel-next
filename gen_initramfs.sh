@@ -590,7 +590,7 @@ append_gpg() {
     mkdir -p "${TEMP}/initramfs-gpg-temp/sbin/"
 
     print_info 1 "Including GPG support"
-    copy_binaries "${TEMP}/initramfs-gpg-temp" /usr/bin/gpg
+    copy_binaries "${TEMP}/initramfs-gpg-temp" /usr/bin/staticgpg
 
     cd "${TEMP}/initramfs-gpg-temp/"
     log_future_cpio_content

@@ -199,7 +199,7 @@ _open_luks() {
                 # (either mounted before or not)
                 good_msg "${luks_key} on device ${real_luks_keydev} found"
                 if [ "$(echo ${luks_key} | grep -o '.gpg$')" = ".gpg" ] && \
-                    [ -e /usr/bin/gpg ]; then
+                    [ -e /usr/bin/staticgpg ]; then
 
                     # TODO(lxnay): WTF is this?
                     [ -e /dev/tty ] && mv /dev/tty /dev/tty.org
@@ -207,10 +207,10 @@ _open_luks() {
 
                     cryptsetup_opts="${cryptsetup_opts} -d -"
                     # if plymouth not in use, gpg reads keyfile passphrase...
-                    gpg_tty_cmd="/usr/bin/gpg --logger-file /dev/null"
+                    gpg_tty_cmd="/usr/bin/staticgpg --logger-file /dev/null"
                     gpg_tty_cmd="${gpg_tty_cmd} --quiet --decrypt ${mntkey}${luks_key} | "
                     # but when plymouth is in use, keyfile passphrase piped in
-                    gpg_ply_cmd="/usr/bin/gpg --logger-file /dev/null"
+                    gpg_ply_cmd="/usr/bin/staticgpg --logger-file /dev/null"
                     gpg_ply_cmd="${gpg_ply_cmd} --quiet --passphrase-fd 0 --batch --no-tty"
                     gpg_ply_cmd="${gpg_ply_cmd} --decrypt ${mntkey}${luks_key} | "
                 else
