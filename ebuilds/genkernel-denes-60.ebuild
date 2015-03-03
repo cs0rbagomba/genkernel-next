@@ -31,7 +31,7 @@ LICENSE="GPL-2"
 SLOT="0"
 RESTRICT=""
 #IUSE="cryptsetup dmraid gpg iscsi plymouth selinux"
-IUSE="cryptsetup staticgpg zfs"
+IUSE="cryptsetup staticgpg zfs selinux"
 
 
 DEPEND="app-text/asciidoc
