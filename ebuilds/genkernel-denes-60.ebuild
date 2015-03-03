@@ -23,7 +23,7 @@ KEYWORDS="~amd64"
 
 #DESCRIPTION="Gentoo automatic kernel building scripts, reloaded"
 #HOMEPAGE="http://www.gentoo.org"
-DESCRIPTION="Fork of genkernel-next with sakaki's staticgpg and rmeote LUKS header."
+DESCRIPTION="Fork of genkernel-next with sakaki's staticgpg and remote LUKS header."
 HOMEPAGE="https://github.com/cs0rbagomba/genkernel-next/"
 
 
@@ -59,7 +59,7 @@ RDEPEND="${DEPEND}
 	!sys-kernel/genkernel-next
 	cryptsetup? ( sys-fs/cryptsetup )
 	staticgpg? ( app-crypt/staticgpg )
-	zfs ? ( sys-kernel/zfs )
+	zfs? ( sys-kernel/zfs )
 	app-portage/portage-utils
 	app-arch/cpio
 	>=app-misc/pax-utils-0.6
