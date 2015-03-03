@@ -193,11 +193,21 @@ _open_luks() {
                         bad_msg "{luks_key} on ${real_luks_keydev} not found."
                         continue
                     fi
+                    good_msg "${luks_key} on device ${real_luks_keydev} found"
+
+                    if [ ! -e "${mntkey}/header.img" ]; then
+                        umount -n "${mntkey}"
+                        key_error=1
+                        keydev_error=1
+                        bad_msg "header.img on ${real_luks_keydev} not found."
+                        continue
+                    fi
+                    good_msg "header.img on device ${real_luks_keydev} found"
+
                 fi
 
                 # At this point a candidate key exists
                 # (either mounted before or not)
-                good_msg "${luks_key} on device ${real_luks_keydev} found"
                 if [ "$(echo ${luks_key} | grep -o '.gpg$')" = ".gpg" ] && \
                     [ -e /usr/bin/staticgpg ]; then
 
@@ -222,8 +232,10 @@ _open_luks() {
             # At this point, keyfile or not, we're ready!
             local ply_cmd="${gpg_ply_cmd}${CRYPTSETUP_BIN}"
             local tty_cmd="${gpg_tty_cmd}${CRYPTSETUP_BIN}"
-            ply_cmd="${ply_cmd} ${cryptsetup_opts} luksOpen ${luks_device} ${luks_dev_name}"
-            tty_cmd="${tty_cmd} ${cryptsetup_opts} luksOpen ${luks_device} ${luks_dev_name}"
+
+            # Using hard-coded remote header, which is at the same place as the key.
+            ply_cmd="${ply_cmd} ${cryptsetup_opts} --header=${mntkey}/header.img  luksOpen ${luks_device} ${luks_dev_name}"
+            tty_cmd="${tty_cmd} ${cryptsetup_opts} --header=${mntkey}/header.img  luksOpen ${luks_device} ${luks_dev_name}"
             # send to a temporary shell script, so plymouth can
             # invoke the pipeline successfully
             local ply_cmd_file="$(mktemp -t "ply_cmd.XXXXXX")"
