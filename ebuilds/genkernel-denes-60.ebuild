@@ -10,7 +10,9 @@ EAPI=5
 #	EGIT_REPO_URI="git://github.com/Sabayon/genkernel-next.git"
 #	inherit git-2
 #fi
-SRC_URL="https://github.com/cs0rbagomba/genkernel-next/archive/denes.zip"
+EGIT_REPO_URI="git://github.com/cs0rbagomba/genkernel-next.git"
+EGIT_MASTER="denes"
+inherit git-2
 
 inherit bash-completion-r1 eutils
 
