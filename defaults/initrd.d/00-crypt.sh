@@ -121,12 +121,6 @@ _open_luks() {
             [ -n "${luks_dev}" ] && \
                 luks_device="${luks_dev}"  # otherwise hope...
 
-            eval "${CRYPTSETUP_BIN} isLuks ${luks_device}" || {
-                bad_msg "${luks_device} does not contain a LUKS header"
-                dev_error=1
-                continue;
-            }
-
             # Handle keys
             if [ "${luks_trim}" = "yes" ]; then
                 good_msg "Enabling TRIM support for ${luks_dev_name}."
@@ -193,7 +187,7 @@ _open_luks() {
                         bad_msg "{luks_key} on ${real_luks_keydev} not found."
                         continue
                     fi
-                    good_msg "${luks_key} on device ${real_luks_keydev} found"
+                    good_msg "${luks_key} on device ${real_luks_keydev} found."
 
                     if [ ! -e "${mntkey}/header.img" ]; then
                         umount -n "${mntkey}"
@@ -202,7 +196,14 @@ _open_luks() {
                         bad_msg "header.img on ${real_luks_keydev} not found."
                         continue
                     fi
-                    good_msg "header.img on device ${real_luks_keydev} found"
+                    good_msg "header.img on device ${real_luks_keydev} found."
+
+                    eval "${CRYPTSETUP_BIN} isLuks ${mntkey}/header.img" || {
+                      bad_msg "${mntkey}/header.img does not contain a LUKS header"
+                      dev_error=1
+                      continue;
+                    }
+                    good_msg "LUKS header in ${mntkey}/header.img found."
 
                 fi
 
